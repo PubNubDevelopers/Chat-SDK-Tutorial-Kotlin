@@ -1,10 +1,7 @@
 package com.pubnub.chatsdk.kotlintutorial.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -46,7 +42,6 @@ fun MessageInputPreview1() {
 fun MessageInput(
     modifier: Modifier = Modifier,
     activeChannel: Channel?,
-    //typingMessageShown: Boolean,
     sendMessage: (messageText: String) -> Unit,
     startTyping: () -> Unit
 ) {
@@ -54,17 +49,12 @@ fun MessageInput(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     PubNubKotlinChatSDKTutorialTheme {
-        //Spacer(Modifier.weight(1f))
         Column(
             modifier = modifier
         ) {
             HorizontalDivider(color = Navy200, thickness = 1.dp)
 
             activeChannel?.let { TypingIndicator(it) }
-            //if (typingMessageShown) {
-            //    TypingIndicator()
-            //}
-
 
             Row(
                 modifier = Modifier
@@ -91,8 +81,9 @@ fun MessageInput(
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            sendMessage(messageText);
-                            messageText = ""; keyboardController?.hide()
+                            sendMessage(messageText)
+                            messageText = ""
+                            keyboardController?.hide()
                         }
                     ),
                     modifier = Modifier

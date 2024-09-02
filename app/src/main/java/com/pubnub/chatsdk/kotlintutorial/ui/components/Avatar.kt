@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.pubnub.chatsdk.kotlintutorial.R
+import com.pubnub.chatsdk.kotlintutorial.ui.testdata.avatarBaseUrl
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.Neutral300
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.PubNubKotlinChatSDKTutorialTheme
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.StatusIndicatorSuccess
@@ -32,7 +33,7 @@ fun AvatarPreview1() {
 @Composable
 fun AvatarPreview2() {
     PubNubKotlinChatSDKTutorialTheme {
-        Avatar("https://chat-sdk-demo-web.netlify.app/avatars/avatar01.png", PresenceIndicator.ONLINE, AvatarSize.SMALL)
+        Avatar("$avatarBaseUrl/avatars/avatar01.png", PresenceIndicator.ONLINE, AvatarSize.SMALL)
     }
 }
 
@@ -40,7 +41,7 @@ fun AvatarPreview2() {
 @Composable
 fun AvatarPreview3() {
     PubNubKotlinChatSDKTutorialTheme {
-        Avatar("https://chat-sdk-demo-web.netlify.app/avatars/m/65.jpg", PresenceIndicator.OFFLINE, AvatarSize.BIG)
+        Avatar("$avatarBaseUrl/avatars/m/65.jpg", PresenceIndicator.OFFLINE, AvatarSize.BIG)
     }
 }
 
@@ -48,7 +49,7 @@ fun AvatarPreview3() {
 @Composable
 fun AvatarPreview4() {
     PubNubKotlinChatSDKTutorialTheme {
-        Avatar("https://chat-sdk-demo-web.netlify.app/avatars/f/65.jpg", PresenceIndicator.ONLINE, AvatarSize.BIG)
+        Avatar("$avatarBaseUrl/avatars/f/65.jpg", PresenceIndicator.ONLINE, AvatarSize.BIG)
     }
 }
 
@@ -84,7 +85,7 @@ fun Avatar(
     }
     if (imageUrl == "")
     {
-        imageUrl = "https://chat-sdk-demo-web.netlify.app/avatars/placeholder2.png"
+        imageUrl = avatarBaseUrl + "/avatars/placeholder2.png"
     }
     Box()
     {

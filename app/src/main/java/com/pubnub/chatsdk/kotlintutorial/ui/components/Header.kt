@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,13 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pubnub.chat.Channel
 import com.pubnub.chatsdk.kotlintutorial.R
-import com.pubnub.chatsdk.kotlintutorial.ui.theme.IconDeselected
-import com.pubnub.chatsdk.kotlintutorial.ui.theme.IconSelected
+import com.pubnub.chatsdk.kotlintutorial.ui.testdata.avatarBaseUrl
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.Navy50
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.Navy900
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.PubNubKotlinChatSDKTutorialTheme
@@ -52,7 +48,7 @@ fun HeaderPreview2() {
         Header(
             chatLayout = true,
             title = "Sarah Johannsen",
-            avatarUrl = "https://chat-sdk-demo-web.netlify.app/group/globe1.png",
+            avatarUrl = avatarBaseUrl + "/group/globe1.png",
             avatarPresence = PresenceIndicator.ONLINE
         )
     }
@@ -112,9 +108,7 @@ fun Header(
                         .aspectRatio(1f)
                         .padding(all = 15.dp)
                         .clickable {
-                            if (backAction != null) {
-                                backAction()
-                            }
+                            backAction()
                         },
                     tint = Color.White
                 )
