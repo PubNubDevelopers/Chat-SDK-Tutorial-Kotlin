@@ -1,6 +1,6 @@
 # Kotlin Chat SDK Tutorial
 
-This application accompanies the Kotlin Chat SDK tutorial.  It is **not** designed to be a standalone demo for the Kotlin Chat, it just illustrates some basic principles.
+This application accompanies the Kotlin Chat SDK tutorial.  It is **not** designed to be a standalone demo for the Kotlin Chat SDK, it just illustrates some basic principles.
 
 Please refer to **[https://www.pubnub.com/tutorials/chat-sdk/](https://www.pubnub.com/tutorials/chat-sdk/)** for the tutorial that accompanies this application.
 
