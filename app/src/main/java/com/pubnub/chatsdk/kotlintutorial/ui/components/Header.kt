@@ -58,7 +58,7 @@ fun HeaderPreview2() {
 fun Header(
     chatLayout: Boolean = false,
     backAction: () -> Unit = {},
-    title: String = "",
+    title: String = "PubNub",
     avatarUrl: String = "",
     avatarPresence: PresenceIndicator = PresenceIndicator.NOT_SHOWN
 ) {
