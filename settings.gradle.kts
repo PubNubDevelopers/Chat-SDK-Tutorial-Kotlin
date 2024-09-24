@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "PubNub Kotlin Chat SDK Tutorial"
 include(":app")
 
-includeBuild("../../../demos/chat/kmp-chat")
+//includeBuild("../../../demos/chat/kmp-chat")

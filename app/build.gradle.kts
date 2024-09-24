@@ -51,6 +51,7 @@ android {
 
 dependencies {
     //implementation("com.pubnub:pubnub-kotlin:9.2.4")
+    implementation ("com.pubnub:pubnub-chat:0.8.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
