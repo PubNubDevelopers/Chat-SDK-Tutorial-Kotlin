@@ -32,4 +32,3 @@ google-services.json
 # Android Profiling
 *.hprof
 
-/app/src/main/java/com/pubnub/chatsdk/kotlintutorial/Keys.kt

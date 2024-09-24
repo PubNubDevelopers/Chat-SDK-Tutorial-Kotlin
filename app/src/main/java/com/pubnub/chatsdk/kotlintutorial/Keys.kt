@@ -1,0 +1,5 @@
+package com.pubnub.chatsdk.kotlintutorial
+
+//  REPLACE THESE WITH YOUR PUB / SUB KEYS
+val PUBNUB_PUBLISH_KEY="PUBLISH_KEY"
+val PUBNUB_SUBSCRIBE_KEY="SUBSCRIBE_KEY"
