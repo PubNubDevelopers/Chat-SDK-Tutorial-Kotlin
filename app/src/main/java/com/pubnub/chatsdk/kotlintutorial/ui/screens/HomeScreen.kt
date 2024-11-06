@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pubnub.api.models.consumer.objects.PNKey
+import com.pubnub.api.models.consumer.objects.PNMemberKey
 import com.pubnub.api.models.consumer.objects.PNSortKey
 import com.pubnub.chat.Channel
 import com.pubnub.chat.Chat
@@ -75,6 +76,9 @@ fun HomeScreen(
                         .toInt()]
                 chat?.currentUser?.update(name = name, profileUrl = randomProfileUrl)?.await()
             }
+            //  Note on Sorting.  You can create a sort order as follows:
+            //val sortOrder: Collection<PNSortKey<PNKey>> = listOf(PNSortKey.PNAsc(PNKey.ID))
+            //  Then pass it to the getChannels call using sort=sortOrder
             publicChannels =
                 chat?.getChannels(filter = "id LIKE \"public*\"")?.await()?.channels?.toList()
             if (publicChannels?.size == 0) {
