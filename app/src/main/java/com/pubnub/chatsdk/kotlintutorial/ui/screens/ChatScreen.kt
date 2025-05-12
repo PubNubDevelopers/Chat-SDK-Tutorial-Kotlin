@@ -64,7 +64,7 @@ fun ChatScreen(
         var messageActionsStream: AutoCloseable? = null
         var messageActionsStreamHistory: AutoCloseable? = null
         try {
-            val channelMemberships: Set<Membership>? =
+            val channelMemberships: List<Membership>? =
                 chat?.currentUser?.getMemberships(filter = "channel.id == '" + activeChannel?.id + "'")
                     ?.await()?.memberships
             var myChannelMembership: Membership? = null
