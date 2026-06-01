@@ -8,7 +8,7 @@ android {
     namespace = "com.pubnub.chatsdk.kotlintutorial"
     compileSdk = 35
 
-        defaultConfig {
+    defaultConfig {
         applicationId = "com.pubnub.chatsdk.kotlintutorial"
         minSdk = 24
         targetSdk = 35
@@ -40,19 +40,15 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/versions/9/OSGI-INF/MANIFEST.MF"
         }
     }
 }
 
 dependencies {
-    //implementation("com.pubnub:pubnub-kotlin:9.2.4")
-    implementation ("com.pubnub:pubnub-chat:0.12.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -61,7 +57,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("com.pubnub:pubnub-chat")
+    implementation("com.pubnub:pubnub-chat:1.0.0")
     implementation ("io.coil-kt:coil-compose:2.7.0")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
     testImplementation(libs.junit)

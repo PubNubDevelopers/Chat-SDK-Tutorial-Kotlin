@@ -20,7 +20,7 @@ fun TypingIndicator(channel: Channel
 ) {
     if (channel.type != ChannelType.PUBLIC) {
         val typingIndicators: Collection<String> by produceState<Collection<String>>(listOf()) {
-            val sub = channel.getTyping {
+            val sub = channel.onTypingChanged {
                 println("Got typing $it")
                 value = it
             }

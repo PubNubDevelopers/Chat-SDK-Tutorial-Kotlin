@@ -2,7 +2,7 @@
 
 This application accompanies the Kotlin Chat SDK tutorial.  It is **not** designed to be a standalone demo for the Kotlin Chat SDK, it just illustrates some basic principles.
 
-Please refer to **[https://www.pubnub.com/tutorials/chat-sdk/](https://www.pubnub.com/tutorials/chat-sdk/)** for the tutorial that accompanies this application.
+Please refer to **[https://www.pubnub.com/tutorials/chat-sdk-kotlin/](https://www.pubnub.com/tutorials/chat-sdk-kotlin/)** for the tutorial that accompanies this application.
 
 ![Screenshot](./media/screen01.png)
 
@@ -30,7 +30,7 @@ Please refer to **[https://www.pubnub.com/tutorials/chat-sdk/](https://www.pubnu
 
 ## Installation / Getting Started
 
-This application is written with Android Studio Koala but should compile with any recent version of the Android Studio IDE.
+This application uses PubNub Kotlin Chat SDK 1.0.0 and should compile with any recent version of the Android Studio IDE.
 
 To run this project yourself you will need a PubNub Account
 
@@ -46,7 +46,7 @@ To run this project yourself you will need a PubNub Account
 
 1. Click your new app to open its settings, then click its keyset.
 
-1. Enable the Stream Controller feature on your keyset (this should be enabled by default after you created the keyset)
+1. Enable the Presence feature on your keyset.
 
 1. Enable the Message Persistence feature on your keyset and choose a duration
 

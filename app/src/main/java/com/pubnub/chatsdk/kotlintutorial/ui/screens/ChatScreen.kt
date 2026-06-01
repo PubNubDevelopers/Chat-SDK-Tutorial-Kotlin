@@ -24,6 +24,7 @@ import com.pubnub.chat.Membership
 import com.pubnub.chat.Message
 import com.pubnub.chat.streamUpdatesOn
 import com.pubnub.chat.types.ChannelType
+import com.pubnub.chat.types.ReadReceipt
 import com.pubnub.chatsdk.kotlintutorial.await
 import com.pubnub.chatsdk.kotlintutorial.ui.components.Header
 import com.pubnub.chatsdk.kotlintutorial.ui.components.MessageInput
@@ -53,7 +54,7 @@ fun ChatScreen(
     onChannelChanged: (Channel?) -> Unit
 ) {
     var messages: List<Message> by remember(activeChannel) { mutableStateOf(listOf()) }
-    var readReceipts: Map<Long, List<String>> by remember { mutableStateOf(mapOf(1L to listOf(""))) }
+    var readReceipts: List<ReadReceipt> by remember(activeChannel) { mutableStateOf(emptyList()) }
     val headerText = remember { mutableStateOf(activeChannel?.name.toString()) }
     val headerProfileUrl =
         remember { mutableStateOf(activeChannel?.custom?.get("profileUrl").toString()) }
@@ -62,72 +63,59 @@ fun ChatScreen(
         var channelMessageSubscription: AutoCloseable? = null
         var readReceiptStream: AutoCloseable? = null
         var messageActionsStream: AutoCloseable? = null
-        var messageActionsStreamHistory: AutoCloseable? = null
         try {
+            fun restartMessageUpdates() {
+                messageActionsStream?.close()
+                messageActionsStream = if (messages.isNotEmpty()) {
+                    Message.streamUpdatesOn(messages = messages) { updatedMessages ->
+                        messages = updatedMessages.toList()
+                    }
+                } else {
+                    null
+                }
+            }
+
+            fun updateReadReceipt(receipt: ReadReceipt) {
+                readReceipts = readReceipts.filterNot { it.userId == receipt.userId } + receipt
+            }
+
             val channelMemberships: List<Membership>? =
                 chat?.currentUser?.getMemberships(filter = "channel.id == '" + activeChannel?.id + "'")
                     ?.await()?.memberships
-            var myChannelMembership: Membership? = null
-            if (channelMemberships?.isNotEmpty() == true) {
-                myChannelMembership = channelMemberships.first()
-            }
-            //  Stream Read Receipts for received messages (not available for public channels)
+            val myChannelMembership: Membership? =
+                channelMemberships?.firstOrNull() ?: activeChannel?.join()?.await()
+
+            //  Read receipts are not available for public channels.
             if (activeChannel?.type != ChannelType.PUBLIC) {
-                readReceiptStream = activeChannel?.streamReadReceipts { receipts ->
-                    readReceipts = receipts
-                    receipts.forEach { (messageTimetoken, users) ->
-                        //Log.d(
-                        //    "KotChatSDKTut",
-                        //    "Message Timetoken: $messageTimetoken was read by users: $users"
-                        //)
-                    }
+                readReceipts = activeChannel?.fetchReadReceipts()?.await()?.receipts ?: emptyList()
+                readReceiptStream = activeChannel?.onReadReceiptReceived { receipt ->
+                    updateReadReceipt(receipt)
                 }
             }
-            channelMessageSubscription = activeChannel?.join {
+            activeChannel?.getHistory(count = 20)?.await()?.let {
+                messages = it.messages
+                messages.lastOrNull()?.let { lastMessage ->
+                    myChannelMembership?.setLastReadMessageTimetoken(lastMessage.timetoken)?.await()
+                }
+                restartMessageUpdates()
+            }
+            channelMessageSubscription = activeChannel?.onMessageReceived {
                 messages = messages + it
                 scope.launch {
                     myChannelMembership?.setLastReadMessage(it)?.await()
                 }
-                // stream updates for the fetched messages
-                messageActionsStream =
-                    Message.streamUpdatesOn(messages = messages) { updatedMessages ->
-                        updatedMessages.forEach { updatedMessage ->
-                            //Log.d("KotChatSDKTut", "Updated message: $updatedMessage")
-                        }
-                        messages = updatedMessages.toList()
-                    }
-
-            }?.await()?.disconnect
-            activeChannel?.getHistory(count = 20)?.await()?.let {
-                messages = it.messages + messages
-                if (messages.isNotEmpty()) {
-                    scope.launch {
-                        myChannelMembership?.setLastReadMessageTimetoken(messages.last().timetoken)
-                            ?.await()
-                    }
-                }
+                restartMessageUpdates()
             }
-            // stream updates for the fetched messages
-            if (messages.isNotEmpty()) {
-                messageActionsStreamHistory =
-                    Message.streamUpdatesOn(messages = messages) { updatedMessages ->
-                        updatedMessages.forEach { updatedMessage ->
-                            //Log.d("KotChatSDKTut", "Updated message: $updatedMessage")
-                        }
-                        messages = updatedMessages.toList()
-                    }
-            }
-
 
             if (activeChannel?.type == ChannelType.DIRECT) {
                 val members = activeChannel.getMembers().await().members
-                    for (member in members) {
-                        if (member.user.id != chat?.currentUser?.id) {
-                            //  This is the other person in the chat
-                            headerText.value = member?.user?.name.toString()
-                            headerProfileUrl.value = member?.user?.profileUrl.toString()
-                        }
+                for (member in members) {
+                    if (member.user.id != chat?.currentUser?.id) {
+                        //  This is the other person in the chat
+                        headerText.value = member.user.name.toString()
+                        headerProfileUrl.value = member.user.profileUrl.toString()
                     }
+                }
             }
 
             awaitCancellation()
@@ -136,7 +124,6 @@ fun ChatScreen(
                 channelMessageSubscription?.close()
                 readReceiptStream?.close()
                 messageActionsStream?.close()
-                messageActionsStreamHistory?.close()
             }
         }
     }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.pubnub.api.UserId
-import com.pubnub.api.enums.PNLogVerbosity
 import com.pubnub.api.v2.PNConfiguration
 import com.pubnub.chat.Chat
 import com.pubnub.chat.config.ChatConfiguration
@@ -81,7 +80,6 @@ fun createChat(chatConfiguration: ChatConfiguration, userId: String): PNFuture<C
             PUBNUB_SUBSCRIBE_KEY
         ) {
             publishKey = PUBNUB_PUBLISH_KEY
-            logVerbosity = PNLogVerbosity.BODY
         }.build()
     )
 }

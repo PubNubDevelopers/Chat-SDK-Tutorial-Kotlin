@@ -70,7 +70,7 @@ fun MessageReaction(
     emoji: String = "",
 ) {
     val scope = rememberCoroutineScope()
-    val count = (message?.actions?.get("reactions")?.get(emoji)?.size ?: 0)
+    val count = message?.reactions?.firstOrNull { it.value == emoji }?.count ?: 0
     Row(
         modifier = Modifier
             .border(

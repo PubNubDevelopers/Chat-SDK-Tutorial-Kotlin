@@ -16,11 +16,12 @@ import androidx.compose.ui.unit.dp
 import com.pubnub.chat.Channel
 import com.pubnub.chat.Chat
 import com.pubnub.chat.Message
+import com.pubnub.chat.types.ReadReceipt
 
 @Composable
 fun MessageList(
     messages: List<Message>,
-    readReceipts: Map<Long, List<String>>,
+    readReceipts: List<ReadReceipt>,
     chat: Chat?,
     activeChannel: Channel?
 ) {

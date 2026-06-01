@@ -24,6 +24,7 @@ import com.pubnub.chat.Channel
 import com.pubnub.chat.Chat
 import com.pubnub.chat.Message
 import com.pubnub.chat.types.ChannelType
+import com.pubnub.chat.types.ReadReceipt
 import com.pubnub.chatsdk.kotlintutorial.ui.testdata.avatarBaseUrl
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.Neutral50
 import com.pubnub.chatsdk.kotlintutorial.ui.theme.Teal100
@@ -34,25 +35,18 @@ fun Message(
     chat: Chat?,
     activeChannel: Channel?,
     message: Message?,
-    readReceipts: Map<Long, List<String>>,
+    readReceipts: List<ReadReceipt>,
     received: Boolean,
     presenceIndicator: PresenceIndicator = PresenceIndicator.ONLINE,
 ) {
     val avatarUrl =
         remember { mutableStateOf("$avatarBaseUrl/avatars/placeholder2.png") }
     val senderName = remember { mutableStateOf("") }
-    //  Determine whether the message has been read
-    var isRead = false;
-    if (activeChannel?.type != ChannelType.PUBLIC) {
-        readReceipts.forEach { (messageTimetoken, users) ->
-            //Log.d("LOGD", "Message Timetoken: $messageTimetoken was read by users: $users")
-            if (messageTimetoken >= message?.timetoken!!) {
-                if ((users.isNotEmpty() && !users.contains(chat?.currentUser?.id)) || users.size > 1) {
-                    isRead = true
-                }
-            }
+    val isRead = activeChannel?.type != ChannelType.PUBLIC &&
+        message != null &&
+        readReceipts.any {
+            it.userId != chat?.currentUser?.id && it.lastReadTimetoken >= message.timetoken
         }
-    }
     Log.d(
         "LOGD",
         "IsRead for Message " + message?.text + "(" + message?.timetoken + ") is " + isRead
@@ -169,7 +163,6 @@ fun Message(
                 )
                 {
 
-                    //Log.d("LOGD", "message actions size: " + message?.actions?.size)
                     MessageReaction(message = message, emoji = "\uD83D\uDE00")
                     MessageReaction(message = message, emoji = "\uD83E\uDD76")
                     if (isRead && activeChannel?.type != ChannelType.PUBLIC) {
